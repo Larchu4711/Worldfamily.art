@@ -3,19 +3,186 @@ import React, { useState } from 'react';
 interface DiscoBallEmblemProps {
   size?: 'sm' | 'lg';
   className?: string;
+  showBarBadge?: boolean;
 }
 
 const DISCO_LOGO_SRC = '/assets/aistudio/LOGO_WFB_DISCOSTYLE_no_background_b5600ece.png';
 
 /**
+ * Metallic Chrome & Gold "BAR" Winged Badge
+ * Matches the user's Figma blueprint circled in blue in screenshot_1_bc084aaa.png:
+ * - Tapered horizontal metallic chrome needle wings on left and right
+ * - Central rounded-rectangle plaque with dark navy lacquer fill and golden trim
+ * - Bold serif "BAR" typography with wide tracking
+ * - 4-point star sparkle glinting on the right needle wing
+ */
+export const MetallicBarBadge: React.FC<{
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}> = ({ className = '', size = 'md' }) => {
+  return (
+    <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
+      <svg
+        viewBox="0 0 380 44"
+        className="w-[260px] sm:w-[310px] md:w-[350px] h-auto overflow-visible filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]"
+        aria-label="The World Family BAR emblem"
+        role="img"
+      >
+        <defs>
+          {/* Chrome / Silver gradient for the horizontal needle wings */}
+          <linearGradient id="chromeNeedleLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="25%" stopColor="#94a3b8" />
+            <stop offset="60%" stopColor="#f8fafc" />
+            <stop offset="85%" stopColor="#cbd5e1" />
+            <stop offset="100%" stopColor="#475569" />
+          </linearGradient>
+          <linearGradient id="chromeNeedleRight" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#475569" />
+            <stop offset="15%" stopColor="#cbd5e1" />
+            <stop offset="40%" stopColor="#f8fafc" />
+            <stop offset="75%" stopColor="#94a3b8" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+          </linearGradient>
+          {/* Bevel highlight gradient for needle edges */}
+          <linearGradient id="needleHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+            <stop offset="50%" stopColor="#cbd5e1" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#1e293b" stopOpacity="0.9" />
+          </linearGradient>
+          {/* Gold plaque border gradient */}
+          <linearGradient id="goldBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fde047" />
+            <stop offset="35%" stopColor="#ca8a04" />
+            <stop offset="65%" stopColor="#fef08a" />
+            <stop offset="100%" stopColor="#a16207" />
+          </linearGradient>
+          {/* Plaque body lacquer gradient */}
+          <linearGradient id="darkLacquerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#1e2638" />
+            <stop offset="50%" stopColor="#111625" />
+            <stop offset="100%" stopColor="#080b12" />
+          </linearGradient>
+        </defs>
+
+        {/* Left Metallic Needle Wing: tapered horizontal rod with 3D bevel */}
+        <g>
+          {/* Main needle body */}
+          <polygon
+            points="12,22 135,17 135,27"
+            fill="url(#chromeNeedleLeft)"
+          />
+          {/* Top highlight bevel line */}
+          <line
+            x1="16"
+            y1="22"
+            x2="135"
+            y2="19.5"
+            stroke="url(#needleHighlight)"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+          {/* Tip highlight */}
+          <circle cx="14" cy="22" r="1.5" fill="#ffffff" opacity="0.9" />
+        </g>
+
+        {/* Right Metallic Needle Wing: tapered horizontal rod with 3D bevel */}
+        <g>
+          {/* Main needle body */}
+          <polygon
+            points="368,22 245,17 245,27"
+            fill="url(#chromeNeedleRight)"
+          />
+          {/* Top highlight bevel line */}
+          <line
+            x1="245"
+            y1="19.5"
+            x2="364"
+            y2="22"
+            stroke="url(#needleHighlight)"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+          {/* Tip highlight */}
+          <circle cx="366" cy="22" r="1.5" fill="#ffffff" opacity="0.9" />
+        </g>
+
+        {/* Center Plaque Outer Shadow / Rim */}
+        <rect
+          x="126"
+          y="6"
+          width="128"
+          height="32"
+          rx="6"
+          fill="none"
+          stroke="rgba(0,0,0,0.6)"
+          strokeWidth="3"
+        />
+
+        {/* Center Plaque Lacquer Body with Gold Trim */}
+        <rect
+          x="128"
+          y="8"
+          width="124"
+          height="28"
+          rx="5"
+          fill="url(#darkLacquerGrad)"
+          stroke="url(#goldBorderGrad)"
+          strokeWidth="2.5"
+        />
+
+        {/* Inner subtle bevel rim highlight */}
+        <rect
+          x="130.5"
+          y="10.5"
+          width="119"
+          height="23"
+          rx="3.5"
+          fill="none"
+          stroke="rgba(255,255,255,0.22)"
+          strokeWidth="1"
+        />
+
+        {/* "BAR" Serif Lettering - matches the bold classic typeface in Figma */}
+        <text
+          x="190"
+          y="27.5"
+          textAnchor="middle"
+          fontFamily="ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
+          fontSize="17"
+          fontWeight="900"
+          letterSpacing="0.26em"
+          fill="#ffffff"
+          className="select-none tracking-widest font-black"
+          style={{ textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(255,255,255,0.45)' }}
+        >
+          BAR
+        </text>
+
+        {/* Star Sparkle on Right Needle Wing (matching screenshot_1_bc084aaa.png) */}
+        <g transform="translate(306, 29) scale(0.9)" className="animate-pulse">
+          <path
+            d="M 0 -15 Q 1.5 -3 15 0 Q 1.5 3 0 15 Q -1.5 3 -15 0 Q -1.5 -3 0 -15 Z"
+            fill="#ffffff"
+            filter="drop-shadow(0 0 6px rgba(254,240,138,0.95))"
+          />
+          <circle cx="0" cy="0" r="2.5" fill="#fef08a" />
+        </g>
+      </svg>
+    </div>
+  );
+};
+
+/**
  * Renders the user-provided World Family Bar rainbow mosaic disco ball image
  * (/assets/aistudio/LOGO_WFB_DISCOSTYLE_no_background_b5600ece.png) with animated
  * rainbow light halo, gentle disco float/shimmer, twinkling mirror starbursts,
- * single 360-degree rotation on mouse hover, and the metallic silver/gold "— BAR —" stage plaque.
+ * single 360-degree rotation on mouse hover, and the metallic chrome/gold "BAR" stage plaque.
  */
 export const DiscoBallEmblem: React.FC<DiscoBallEmblemProps> = ({
   size = 'lg',
   className = '',
+  showBarBadge = true,
 }) => {
   const isSmall = size === 'sm';
   const [isSpinning, setIsSpinning] = useState(false);
@@ -32,16 +199,18 @@ export const DiscoBallEmblem: React.FC<DiscoBallEmblemProps> = ({
       className={`relative select-none flex flex-col items-center justify-center cursor-pointer ${
         isSmall
           ? 'w-11 h-11'
-          : 'w-[270px] h-[290px] sm:w-[320px] sm:h-[340px] lg:w-[360px] lg:h-[380px]'
+          : 'w-[280px] sm:w-[340px] lg:w-[380px]'
       } ${className}`}
     >
       {/* Animated rotating rainbow mosaic light halo behind the sphere */}
       <div
-        className="absolute inset-3 rounded-full pointer-events-none animate-disco-halo"
+        className="absolute top-2 rounded-full pointer-events-none animate-disco-halo"
         style={{
+          width: isSmall ? '36px' : '260px',
+          height: isSmall ? '36px' : '260px',
           background:
             'conic-gradient(from 0deg, rgba(230,36,41,0.55), rgba(243,112,33,0.55), rgba(250,204,21,0.6), rgba(22,163,74,0.5), rgba(29,112,219,0.55), rgba(139,44,245,0.55), rgba(230,36,41,0.55))',
-          filter: isSmall ? 'blur(5px)' : 'blur(24px)',
+          filter: isSmall ? 'blur(5px)' : 'blur(26px)',
         }}
         aria-hidden="true"
       />
@@ -55,7 +224,7 @@ export const DiscoBallEmblem: React.FC<DiscoBallEmblemProps> = ({
           className={`w-full h-auto object-contain select-none origin-center ${
             isSpinning ? 'animate-logo-spin-once' : ''
           } ${
-            isSmall ? 'max-h-11' : 'max-h-[250px] sm:max-h-[296px] lg:max-h-[330px]'
+            isSmall ? 'max-h-11' : 'max-h-[240px] sm:max-h-[290px] lg:max-h-[320px]'
           }`}
         />
       </div>
@@ -63,43 +232,55 @@ export const DiscoBallEmblem: React.FC<DiscoBallEmblemProps> = ({
       {/* Animated 8-point disco mirror light reflections around the sphere */}
       {!isSmall && (
         <svg
-          viewBox="0 0 420 420"
+          viewBox="0 0 420 380"
           className="w-full h-full absolute inset-0 z-20 pointer-events-none overflow-visible"
           aria-hidden="true"
         >
+          {/* Top-left mirror sparkle (at ~10 o'clock) */}
           <g className="animate-sparkle">
-            <g transform="translate(68, 58)">
+            <g transform="translate(74, 52)">
               <path
-                d="M0 -24 L4 -4 L24 0 L4 4 L0 24 L-4 4 L-24 0 L-4 -4 Z"
+                d="M 0 -22 Q 2 -3 22 0 Q 2 3 0 22 Q -2 3 -22 0 Q -2 -3 0 -22 Z"
                 fill="#ffffff"
+                filter="drop-shadow(0 0 8px rgba(255,255,255,0.9))"
               />
-              <circle r="6" fill="#fff2b2" />
+              <circle r="4" fill="#fff7cd" />
             </g>
-            <g transform="translate(348, 78) scale(1.15)">
+            {/* Top-right mirror sparkle (at ~2 o'clock) */}
+            <g transform="translate(346, 72) scale(1.1)">
               <path
-                d="M0 -24 L4 -4 L24 0 L4 4 L0 24 L-4 4 L-24 0 L-4 -4 Z"
+                d="M 0 -22 Q 2 -3 22 0 Q 2 3 0 22 Q -2 3 -22 0 Q -2 -3 0 -22 Z"
                 fill="#ffffff"
+                filter="drop-shadow(0 0 8px rgba(254,240,138,0.9))"
               />
-              <circle r="6" fill="#facc15" />
+              <circle r="4" fill="#facc15" />
             </g>
           </g>
+          {/* Ambient sparkling glints */}
           <g className="animate-sparkle-delayed">
-            <g transform="translate(38, 224) scale(0.95)">
+            <g transform="translate(42, 210) scale(0.85)">
               <path
-                d="M0 -22 L3.5 -3.5 L22 0 L3.5 3.5 L0 22 L-3.5 3.5 L-22 0 L-3.5 -3.5 Z"
+                d="M 0 -18 Q 2 -3 18 0 Q 2 3 0 18 Q -2 3 -18 0 Q -2 -3 0 -18 Z"
                 fill="#ffffff"
               />
-              <circle r="5" fill="#f37021" />
+              <circle r="3" fill="#ffffff" />
             </g>
-            <g transform="translate(364, 258) scale(1.05)">
+            <g transform="translate(368, 220) scale(0.95)">
               <path
-                d="M0 -22 L3.5 -3.5 L22 0 L3.5 3.5 L0 22 L-3.5 3.5 L-22 0 L-3.5 -3.5 Z"
+                d="M 0 -18 Q 2 -3 18 0 Q 2 3 0 18 Q -2 3 -18 0 Q -2 -3 0 -18 Z"
                 fill="#ffffff"
               />
-              <circle r="5" fill="#fff2b2" />
+              <circle r="3" fill="#fff2b2" />
             </g>
           </g>
         </svg>
+      )}
+
+      {/* Prominent Metallic Winged BAR Badge beneath the disco ball (Figma blueprint) */}
+      {!isSmall && showBarBadge && (
+        <div className="relative z-20 -mt-2 sm:-mt-3 flex justify-center w-full">
+          <MetallicBarBadge />
+        </div>
       )}
     </div>
   );

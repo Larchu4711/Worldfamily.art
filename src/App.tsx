@@ -263,8 +263,10 @@ export default function App() {
               type="button"
               data-nav-target="bar"
               onClick={(e) => handleBeamToSection('bar', e)}
-              className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
-                beamedSection === 'bar' ? 'ring-2 ring-white scale-105' : ''
+              className={`bg-white text-[#1c2335] hover:bg-[#fffdf7] hover:text-[#0b0f19] font-bold text-xs sm:text-sm px-4 sm:px-5 py-1.5 rounded-full border border-black/10 shadow-[0_3px_10px_rgba(0,0,0,0.32)] transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-105 hover:shadow-[0_5px_15px_rgba(0,0,0,0.45)] ${
+                beamedSection === 'bar'
+                  ? 'ring-2 ring-[#f2c438] bg-[#fffaf0] text-[#0b0f19] shadow-[0_0_16px_rgba(242,196,56,0.6)] scale-105'
+                  : ''
               }`}
             >
               {t.nav.bar}
@@ -273,8 +275,10 @@ export default function App() {
               type="button"
               data-nav-target="street-food"
               onClick={(e) => handleBeamToSection('street-food', e)}
-              className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
-                beamedSection === 'street-food' ? 'ring-2 ring-white scale-105' : ''
+              className={`bg-white text-[#1c2335] hover:bg-[#fffdf7] hover:text-[#0b0f19] font-bold text-xs sm:text-sm px-4 sm:px-5 py-1.5 rounded-full border border-black/10 shadow-[0_3px_10px_rgba(0,0,0,0.32)] transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-105 hover:shadow-[0_5px_15px_rgba(0,0,0,0.45)] ${
+                beamedSection === 'street-food'
+                  ? 'ring-2 ring-[#f2c438] bg-[#fffaf0] text-[#0b0f19] shadow-[0_0_16px_rgba(242,196,56,0.6)] scale-105'
+                  : ''
               }`}
             >
               {t.nav.streetFood}
@@ -283,8 +287,10 @@ export default function App() {
               type="button"
               data-nav-target="garden"
               onClick={(e) => handleBeamToSection('garden', e)}
-              className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
-                beamedSection === 'garden' ? 'ring-2 ring-white scale-105' : ''
+              className={`bg-white text-[#1c2335] hover:bg-[#fffdf7] hover:text-[#0b0f19] font-bold text-xs sm:text-sm px-4 sm:px-5 py-1.5 rounded-full border border-black/10 shadow-[0_3px_10px_rgba(0,0,0,0.32)] transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-105 hover:shadow-[0_5px_15px_rgba(0,0,0,0.45)] ${
+                beamedSection === 'garden'
+                  ? 'ring-2 ring-[#f2c438] bg-[#fffaf0] text-[#0b0f19] shadow-[0_0_16px_rgba(242,196,56,0.6)] scale-105'
+                  : ''
               }`}
             >
               {t.nav.garden}
@@ -293,8 +299,10 @@ export default function App() {
               type="button"
               data-nav-target="applications"
               onClick={(e) => handleBeamToSection('applications', e)}
-              className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
-                beamedSection === 'applications' ? 'ring-2 ring-white scale-105' : ''
+              className={`bg-white text-[#1c2335] hover:bg-[#fffdf7] hover:text-[#0b0f19] font-bold text-xs sm:text-sm px-4 sm:px-5 py-1.5 rounded-full border border-black/10 shadow-[0_3px_10px_rgba(0,0,0,0.32)] transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-105 hover:shadow-[0_5px_15px_rgba(0,0,0,0.45)] ${
+                beamedSection === 'applications'
+                  ? 'ring-2 ring-[#f2c438] bg-[#fffaf0] text-[#0b0f19] shadow-[0_0_16px_rgba(242,196,56,0.6)] scale-105'
+                  : ''
               }`}
             >
               {t.nav.applications}
@@ -309,7 +317,7 @@ export default function App() {
                 onClick={() => setIsLangDropdownOpen((prev) => !prev)}
                 aria-label="Sprache wählen"
                 aria-expanded={isLangDropdownOpen}
-                className="btn-disco-mosaic-3d inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase text-white cursor-pointer whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase text-white bg-white/10 hover:bg-white/20 border border-white/25 shadow-sm transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 <span>{t.languageLabel}</span>
                 <ChevronDown className="w-3.5 h-3.5" />
@@ -469,65 +477,64 @@ export default function App() {
             aria-hidden="true"
           />
 
-          {/* Main Hero Split Content (Unrolls from the right when opening the webpage) */}
-          <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 pb-20 lg:py-12 my-auto animate-hero-unroll-right">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
-              {/* Left Column: Large Glowing Rainbow Mosaic Disco Ball Logo positioned above the Camino stone */}
-              <div className="lg:col-span-5 flex flex-col items-center lg:items-center lg:-mt-10">
-                <DiscoBallEmblem size="lg" />
-              </div>
+          {/* Main Hero Content: Centered composition matching Figma blueprint screenshot_1_bc084aaa.png */}
+          <div className="relative z-10 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-20 lg:py-10 my-auto animate-hero-unroll-right flex flex-col items-center text-center">
+            {/* Center Stage: Glowing Rainbow Mosaic Disco Ball Logo + Metallic BAR Badge */}
+            <div className="flex flex-col items-center justify-center -mb-2 sm:-mb-3">
+              <DiscoBallEmblem size="lg" showBarBadge={true} />
+            </div>
 
-              {/* Right Column: Handwritten "WorldFamily.art", Subtitle, and Dual CTAs */}
-              <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5">
-                <h1 className="font-script text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.85)] leading-tight">
-                  {t.hero.title}
-                </h1>
+            {/* Handwritten "WorldFamily.art" centered directly below the BAR badge */}
+            <h1 className="font-script text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] leading-tight tracking-wide mt-1">
+              {t.hero.title}
+            </h1>
 
-                <div className="space-y-1 text-lg sm:text-xl lg:text-2xl text-white font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] max-w-xl">
-                  <p>{t.hero.subtitleLine1}</p>
-                  <p>{t.hero.subtitleLine2}</p>
-                </div>
+            {/* Subtitle Lines */}
+            <div className="mt-3 space-y-1 text-base sm:text-xl lg:text-2xl text-white font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)] max-w-2xl px-2">
+              <p>{t.hero.subtitleLine1}</p>
+              <p className="text-sm sm:text-base text-white/85 font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                {t.hero.subtitleLine2}
+              </p>
+            </div>
 
-                {/* Dual 3D Disco-Mosaic Action Buttons ("Unsere Welt entdecken ->" + "[> Video / Impressionen]") */}
-                <div className="pt-2 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={handleScrollToOverview}
-                    className="btn-disco-mosaic-3d w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-base cursor-pointer whitespace-nowrap shrink-0"
-                  >
-                    <span>{t.hero.primaryCta}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+            {/* Dual Action Buttons ("Unsere Welt entdecken ->" + "[> Video / Impressionen]") */}
+            <div className="pt-5 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={handleScrollToOverview}
+                className="btn-disco-mosaic-3d w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-base cursor-pointer whitespace-nowrap shrink-0 shadow-lg"
+              >
+                <span>{t.hero.primaryCta}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsVideoModalOpen(true)}
-                    className="btn-disco-mosaic-3d w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-base cursor-pointer whitespace-nowrap shrink-0"
-                  >
-                    <Play className="w-4 h-4 fill-white" />
-                    <span>{t.hero.secondaryCta}</span>
-                  </button>
-                </div>
+              <button
+                type="button"
+                onClick={() => setIsVideoModalOpen(true)}
+                className="btn-disco-mosaic-3d w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-base cursor-pointer whitespace-nowrap shrink-0 shadow-lg"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>{t.hero.secondaryCta}</span>
+              </button>
+            </div>
 
-                {/* Carousel Dots (3 dots as shown in the mockup) */}
-                <div className="pt-3 flex items-center gap-3" role="tablist" aria-label="Hero Impressionen">
-                  {t.hero.slides.map((slide, idx) => (
-                    <button
-                      key={slide.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={activeSlideIndex === idx}
-                      aria-label={slide.caption}
-                      onClick={() => setActiveSlideIndex(idx)}
-                      className={`h-2.5 rounded-full transition-all cursor-pointer ${
-                        activeSlideIndex === idx
-                          ? 'w-3 bg-white shadow-[0_0_8px_rgba(255,255,255,0.95)] scale-110'
-                          : 'w-2.5 bg-white/55 hover:bg-white/85'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+            {/* Carousel Dots (3 dots as shown in the mockup) */}
+            <div className="pt-4 flex items-center justify-center gap-3" role="tablist" aria-label="Hero Impressionen">
+              {t.hero.slides.map((slide, idx) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeSlideIndex === idx}
+                  aria-label={slide.caption}
+                  onClick={() => setActiveSlideIndex(idx)}
+                  className={`h-2.5 rounded-full transition-all cursor-pointer ${
+                    activeSlideIndex === idx
+                      ? 'w-3 bg-white shadow-[0_0_8px_rgba(255,255,255,0.95)] scale-110'
+                      : 'w-2.5 bg-white/55 hover:bg-white/85'
+                  }`}
+                />
+              ))}
             </div>
           </div>
 
