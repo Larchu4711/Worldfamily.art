@@ -25,14 +25,25 @@ import {
 import { TornPaperEdge } from './components/TornPaperEdge';
 import { SubpageShowcaseCard } from './components/SubpageShowcaseCard';
 import { VideoImpressionsModal, InquiryModal } from './components/Modals';
+import { CosmicParticleBeamCanvas } from './components/CosmicParticleBeamCanvas';
+import type { ParticlePoint } from './utils/particlePhysics';
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>('de');
   const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
   const [activeSectionFilter, setActiveSectionFilter] = useState<SectionId | 'all'>('all');
   const [beamedSection, setBeamedSection] = useState<SectionId | null>(null);
-  const [beamKey, setBeamKey] = useState<number>(0);
-  const [isBeaming, setIsBeaming] = useState<boolean>(false);
+  const [beamState, setBeamState] = useState<{
+    isActive: boolean;
+    phase: 'idle' | 'dissolving' | 'exploding';
+    targetPoint: ParticlePoint | null;
+    pendingDestination: SectionId | null | 'home';
+  }>({
+    isActive: false,
+    phase: 'idle',
+    targetPoint: null,
+    pendingDestination: null,
+  });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [isWorldDropdownOpen, setIsWorldDropdownOpen] = useState(false);
@@ -42,31 +53,92 @@ export default function App() {
   const t = CONTENT[locale];
   const currentHeroSlide = t.hero.slides[activeSlideIndex] || t.hero.slides[0];
 
-  useEffect(() => {
-    if (!isBeaming) return;
-    const timer = window.setTimeout(() => {
-      setIsBeaming(false);
-    }, 680);
-    return () => window.clearTimeout(timer);
-  }, [isBeaming, beamKey]);
+  const findTargetCoordinates = (targetSelector: string, fallbackEl?: HTMLElement | null): ParticlePoint => {
+    try {
+      const el = document.querySelector(targetSelector) as HTMLElement | null;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (Number.isFinite(rect.left) && Number.isFinite(rect.top) && rect.width > 0) {
+          el.classList.remove('btn-energy-absorbing');
+          void el.offsetWidth;
+          el.classList.add('btn-energy-absorbing');
+          return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        }
+      }
+      if (fallbackEl) {
+        const rect = fallbackEl.getBoundingClientRect();
+        if (Number.isFinite(rect.left) && Number.isFinite(rect.top) && rect.width > 0) {
+          fallbackEl.classList.remove('btn-energy-absorbing');
+          void fallbackEl.offsetWidth;
+          fallbackEl.classList.add('btn-energy-absorbing');
+          return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        }
+      }
+    } catch {
+      // fallback safely
+    }
+    return { x: window.innerWidth * 0.5, y: 40 };
+  };
 
-  const handleBeamToSection = (sectionId: SectionId) => {
+  const handleBeamToSection = (sectionId: SectionId, e?: React.MouseEvent) => {
     setIsMobileMenuOpen(false);
     setIsWorldDropdownOpen(false);
-    setBeamedSection(sectionId);
-    setBeamKey((prev) => prev + 1);
-    setIsBeaming(true);
+
+    if (beamState.isActive) return;
+
+    const targetPoint = findTargetCoordinates(
+      `[data-nav-target="${sectionId}"]`,
+      e?.currentTarget as HTMLElement
+    );
+
+    setBeamState({
+      isActive: true,
+      phase: 'dissolving',
+      targetPoint,
+      pendingDestination: sectionId,
+    });
+  };
+
+  const handleBeamHome = (e?: React.MouseEvent) => {
+    setIsMobileMenuOpen(false);
+    setIsWorldDropdownOpen(false);
+
+    if (beamState.isActive) return;
+
+    const targetPoint = findTargetCoordinates(
+      '[data-nav-target="home"]',
+      e?.currentTarget as HTMLElement
+    );
+
+    setBeamState({
+      isActive: true,
+      phase: 'dissolving',
+      targetPoint,
+      pendingDestination: 'home',
+    });
+  };
+
+  const handleParticleMidpoint = () => {
+    if (beamState.pendingDestination === 'home') {
+      setBeamedSection(null);
+      setActiveSectionFilter('all');
+    } else if (beamState.pendingDestination) {
+      setBeamedSection(beamState.pendingDestination);
+    }
+    setBeamState((prev) => ({ ...prev, phase: 'exploding' }));
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
-  const handleBeamHome = () => {
-    setIsMobileMenuOpen(false);
-    setIsWorldDropdownOpen(false);
-    setBeamedSection(null);
-    setActiveSectionFilter('all');
-    setBeamKey((prev) => prev + 1);
-    setIsBeaming(true);
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  const handleParticleComplete = () => {
+    setBeamState({
+      isActive: false,
+      phase: 'idle',
+      targetPoint: null,
+      pendingDestination: null,
+    });
+    document.querySelectorAll('.btn-energy-absorbing').forEach((el) => {
+      el.classList.remove('btn-energy-absorbing');
+    });
   };
 
   const handleScrollToOverview = () => {
@@ -110,25 +182,15 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col parchment-surface text-[#231f20]">
       {/* =====================================================================
-          TRANSPORTER BEAM OVERLAY (Plays when beaming to a tab)
+          COSMIC PARTICLE BEAM PORTAL CANVAS
+          (Page dissolves into particles -> vortex into button -> fountain explosion)
          ===================================================================== */}
-      {isBeaming && (
-        <div
-          key={`beam-overlay-${beamKey}`}
-          className="fixed inset-0 z-50 pointer-events-none overflow-hidden"
-          aria-hidden="true"
-        >
-          <div className="absolute inset-0 beam-curtain" />
-          <div
-            className="absolute inset-x-0 h-24 beam-scanline"
-            style={{
-              background:
-                'linear-gradient(180deg, transparent 0%, rgba(242,196,56,0.55) 45%, rgba(255,255,255,0.95) 50%, rgba(56,189,248,0.55) 55%, transparent 100%)',
-              boxShadow: '0 0 40px rgba(242,196,56,0.8)',
-            }}
-          />
-        </div>
-      )}
+      <CosmicParticleBeamCanvas
+        isActive={beamState.isActive}
+        targetPoint={beamState.targetPoint}
+        onMidpoint={handleParticleMidpoint}
+        onComplete={handleParticleComplete}
+      />
 
       {/* =====================================================================
           TOP NAVIGATION BAR (Matches the dark twilight header in the mockup)
@@ -138,9 +200,10 @@ export default function App() {
           {/* Zone 1: Brand Lockup (Mini Disco Ball Emblem + Handwritten WorldFamily.art) */}
           <a
             href="#top"
+            data-nav-target="home"
             onClick={(e) => {
               e.preventDefault();
-              handleBeamHome();
+              handleBeamHome(e);
             }}
             className="flex items-center gap-3 whitespace-nowrap shrink-0 group cursor-pointer"
           >
@@ -159,6 +222,7 @@ export default function App() {
             <div className="relative">
               <button
                 type="button"
+                data-nav-target="world-family"
                 onClick={() => setIsWorldDropdownOpen((prev) => !prev)}
                 aria-expanded={isWorldDropdownOpen}
                 className={`inline-flex items-center gap-1.5 py-2 hover:text-[#f2c438] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
@@ -176,7 +240,7 @@ export default function App() {
                 >
                   <button
                     type="button"
-                    onClick={handleBeamHome}
+                    onClick={(e) => handleBeamHome(e)}
                     className="w-full text-left px-4 py-2 text-sm text-[#f2c438] font-semibold hover:bg-white/10 transition-colors cursor-pointer border-b border-white/10"
                   >
                     ✦ Startseite (Übersicht)
@@ -185,7 +249,7 @@ export default function App() {
                     <button
                       key={card.id}
                       type="button"
-                      onClick={() => handleBeamToSection(card.id)}
+                      onClick={(e) => handleBeamToSection(card.id, e)}
                       className="w-full text-left px-4 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-[#f2c438] transition-colors cursor-pointer"
                     >
                       {card.title}
@@ -197,7 +261,8 @@ export default function App() {
 
             <button
               type="button"
-              onClick={() => handleBeamToSection('bar')}
+              data-nav-target="bar"
+              onClick={(e) => handleBeamToSection('bar', e)}
               className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
                 beamedSection === 'bar' ? 'ring-2 ring-white scale-105' : ''
               }`}
@@ -206,7 +271,8 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={() => handleBeamToSection('street-food')}
+              data-nav-target="street-food"
+              onClick={(e) => handleBeamToSection('street-food', e)}
               className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
                 beamedSection === 'street-food' ? 'ring-2 ring-white scale-105' : ''
               }`}
@@ -215,7 +281,8 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={() => handleBeamToSection('garden')}
+              data-nav-target="garden"
+              onClick={(e) => handleBeamToSection('garden', e)}
               className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
                 beamedSection === 'garden' ? 'ring-2 ring-white scale-105' : ''
               }`}
@@ -224,7 +291,8 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={() => handleBeamToSection('applications')}
+              data-nav-target="applications"
+              onClick={(e) => handleBeamToSection('applications', e)}
               className={`btn-disco-mosaic-3d py-1.5 px-3.5 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap shrink-0 cursor-pointer ${
                 beamedSection === 'applications' ? 'ring-2 ring-white scale-105' : ''
               }`}
@@ -310,21 +378,30 @@ export default function App() {
         )}
       </header>
 
-      <main id="top" className="flex-1">
+      <main
+        id="top"
+        className={`flex-1 transition-all duration-300 ${
+          beamState.phase === 'dissolving'
+            ? 'page-particle-dissolving'
+            : beamState.phase === 'exploding'
+            ? 'page-particle-emerging'
+            : ''
+        }`}
+      >
         {beamedSection ? (
           /* =====================================================================
              BEAMED DESTINATION VIEW (Matches the individual subpage mockups on the right!)
              Appears immediately beneath the top header without scrolling down.
              ===================================================================== */
           <section
-            key={`beamed-${beamedSection}-${beamKey}`}
-            className="py-5 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-beam-materialize"
+            key={`beamed-${beamedSection}`}
+            className="py-5 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
           >
             {/* Beamed Subpage Header Bar: Back to Overview & Quick Subpage Switcher */}
             <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-3 bg-[#f0e4cc]/90 p-2.5 sm:p-3 rounded-2xl border border-[#dec99f] shadow-sm">
               <button
                 type="button"
-                onClick={handleBeamHome}
+                onClick={(e) => handleBeamHome(e)}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/95 hover:bg-white text-xs sm:text-sm font-bold text-[#231f20] shadow-sm border border-[#d8c59e] hover:border-[#c5ab7d] transition-all hover:-translate-x-0.5 cursor-pointer whitespace-nowrap"
               >
                 <ArrowLeft className="w-4 h-4 text-[#cf9110]" />
@@ -347,7 +424,7 @@ export default function App() {
                     type="button"
                     role="tab"
                     aria-selected={beamedSection === card.id}
-                    onClick={() => handleBeamToSection(card.id)}
+                    onClick={(e) => handleBeamToSection(card.id, e)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       beamedSection === card.id
                         ? 'bg-[#1c2335] text-[#f2c438] shadow-sm ring-1 ring-[#f2c438]'
@@ -369,7 +446,7 @@ export default function App() {
             />
           </section>
         ) : (
-          <div key={`home-view-${beamKey}`} className={beamKey > 0 ? 'animate-beam-materialize' : ''}>
+          <div key="home-view">
         {/* =====================================================================
             HERO SECTION (Faro de Fisterra Sunset, Camino Shell Stone & Disco Ball)
            ===================================================================== */}
@@ -492,7 +569,7 @@ export default function App() {
             {t.cards.map((card) => (
               <div
                 key={card.id}
-                onClick={() => handleBeamToSection(card.id)}
+                onClick={(e) => handleBeamToSection(card.id, e)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {

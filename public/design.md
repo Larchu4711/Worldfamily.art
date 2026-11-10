@@ -71,11 +71,16 @@ Beim Aufrufen der Webseite fährt der Hero-Inhaltsbereich (`section > div:nth-of
 ### 5.2 360°-Logo-Rotation bei Maus-Hover (`.animate-logo-spin-once`)
 Sobald der Besucher mit der Maus über das Disco-Logo fliegt (`onMouseEnter`), wird die Klasse `.animate-logo-spin-once` aktiviert. Das Logo dreht sich einmal komplett um **360° um die eigene Achse** (`@keyframes discoSpinOnce`) und läuft auch bei kurzem Überfliegen sauber bis zum Ende durch (`onAnimationEnd`).
 
-### 5.3 „Beam-Me-Up“ / Transporter-Navigation (`.beam-curtain` & `.animate-beam-materialize`)
-Ein Klick auf die Register **„Bar“**, **„Street Food“**, **„Garden“** oder **„Applications“** in der oberen Navigation scrollt **nicht** nach unten:
-- Stattdessen wird die Ansicht sofort auf `scrollTop = 0` geschaltet.
-- Ein visueller **Transporter-Lichtvorhang** (`.beam-curtain`) mit vertikalen Energiestrahlen und einer leuchtenden **Scanline** (`.beam-scanline`) fährt über den Bildschirm.
-- Die gewählte Sektion materialisiert sich direkt unterhalb der Kopfzeile mit einem Licht- und Skalierungsimpuls (`@keyframes beamMaterialize`).
+### 5.3 Kosmischer Partikel-Quantum-Beam-Portaleffekt (`<CosmicParticleBeamCanvas />`)
+Ein Klick auf ein Zielregister (**„Bar“**, **„Street Food“**, **„Garden“**, **„Applications“** oder **„World Family“** / Startseite) löst keinen statischen Schnitt und keinen Scanline-Glitch aus, sondern eine organische 2-Phasen-Quanten-Partikeltransformation:
+- **Phase 1: Auflösung & Wirbel-Konvergenz (0–500 ms):**
+  - Die aktuelle Seite löst sich sanft in ein funkelndes Mosaik aus über **380 leuchtenden Partikeln** auf (`.page-particle-dissolving`).
+  - Die Partikel (in den Regenbogenfarben des Discokugel-Logos: Gold, Orange, Karminrot, Violett, Azurblau und Smaragdgrün) schwirren in einer dynamischen Wirbelbahn (`stepVortexParticle`) zusammen und fließen konzentriert direkt in die Koordinaten des angeklickten Ziel-Buttons hinein.
+  - Der Ziel-Button absorbiert die Energie mit einer pulsierenden Plasma-Aura (`.btn-energy-absorbing`, `targetButtonAbsorbPulse`).
+- **Phase 2: Fontänen-Explosion & Genesis-Aufbau (500–1180 ms):**
+  - Genau im Umkehrpunkt schaltet die Seite die neue Zielwelt frei.
+  - Aus dem Ziel-Button schießt eine strahlende Fontäne aus über **420 Partikeln** und Schockwellenringen über den gesamten Viewport (`stepExplosionParticle`).
+  - Die neue Seite materialisiert sich leuchtend aus dem Partikelregen heraus (`.page-particle-emerging`), während sich die Partikel sanft auflösen und die Seite kristallklar und voll interaktiv zurücklassen.
 
 ---
 
