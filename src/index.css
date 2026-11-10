@@ -1,0 +1,368 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --parchment: #f5ecd9;
+    --parchment-card: #fbf6eb;
+    --parchment-border: #e4d5b7;
+    --ink-dark: #231f20;
+    --ink-body: #3c3530;
+    --gold-cta: #f2c438;
+    --gold-cta-hover: #e5b322;
+  }
+
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.font-script {
+  font-family: 'Kalam', 'Caveat', cursive;
+}
+
+.font-hand {
+  font-family: 'Caveat', 'Kalam', cursive;
+}
+
+.font-serif-editorial {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+/* Warm organic parchment paper texture */
+.parchment-surface {
+  background-color: #f5ecd9;
+  background-image:
+    radial-gradient(at 18% 25%, rgba(255, 250, 238, 0.7) 0px, transparent 55%),
+    radial-gradient(at 82% 72%, rgba(229, 209, 173, 0.45) 0px, transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(168, 140, 96, 0.025) 0px,
+      rgba(168, 140, 96, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+.parchment-card {
+  background: linear-gradient(180deg, rgba(252, 248, 238, 0.94) 0%, rgba(244, 233, 211, 0.94) 100%);
+  border: 1px solid rgba(209, 190, 152, 0.75);
+  box-shadow: 0 8px 24px rgba(58, 43, 22, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.parchment-card:hover {
+  border-color: rgba(186, 150, 82, 0.95);
+  box-shadow: 0 14px 30px rgba(58, 43, 22, 0.13), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+@keyframes twinkleStar {
+  0%, 100% {
+    transform: scale(0.75) rotate(0deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.25) rotate(22deg);
+    opacity: 1;
+  }
+}
+
+@keyframes discoFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1.5deg) scale(1);
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65)) brightness(1);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg) scale(1.025);
+    filter: drop-shadow(0 18px 36px rgba(243, 112, 33, 0.55)) brightness(1.07);
+  }
+}
+
+@keyframes discoHaloSpin {
+  0% {
+    transform: rotate(0deg) scale(0.96);
+    opacity: 0.65;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: rotate(360deg) scale(0.96);
+    opacity: 0.65;
+  }
+}
+
+@keyframes discoSpinOnce {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes beamMaterialize {
+  0% {
+    opacity: 0;
+    transform: scaleY(1.12) scaleX(0.94) translateY(-18px);
+    filter: brightness(2.6) contrast(1.35) saturate(1.6) blur(10px)
+      drop-shadow(0 0 36px rgba(242, 196, 56, 0.95));
+  }
+  38% {
+    opacity: 0.92;
+    transform: scaleY(1.03) scaleX(0.985) translateY(0px);
+    filter: brightness(1.55) contrast(1.15) saturate(1.35) blur(2px)
+      drop-shadow(0 0 24px rgba(56, 189, 248, 0.75));
+  }
+  72% {
+    opacity: 1;
+    transform: scaleY(0.995) scaleX(1.003);
+    filter: brightness(1.12) blur(0px)
+      drop-shadow(0 0 12px rgba(242, 196, 56, 0.45));
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1) translateY(0px);
+    filter: brightness(1) contrast(1) saturate(1) blur(0px);
+  }
+}
+
+@keyframes beamOverlayCurtain {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.4);
+  }
+  22% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  65% {
+    opacity: 0.85;
+    transform: scaleY(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1.1);
+  }
+}
+
+@keyframes beamScanlineSweep {
+  0% {
+    top: -10%;
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+.animate-sparkle {
+  animation: twinkleStar 2.8s ease-in-out infinite;
+}
+
+.animate-sparkle-delayed {
+  animation: twinkleStar 3.4s ease-in-out 1.2s infinite;
+}
+
+.animate-disco-ball {
+  animation: discoFloat 5.5s ease-in-out infinite;
+}
+
+.animate-disco-halo {
+  animation: discoHaloSpin 14s linear infinite;
+}
+
+.animate-logo-spin-once {
+  animation: discoSpinOnce 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+}
+
+.animate-beam-materialize {
+  animation: beamMaterialize 0.68s cubic-bezier(0.16, 1, 0.3, 1) 1 forwards;
+  transform-origin: top center;
+}
+
+.beam-curtain {
+  animation: beamOverlayCurtain 0.68s cubic-bezier(0.16, 1, 0.3, 1) 1 forwards;
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(255, 252, 220, 0.78) 0%, rgba(242, 196, 56, 0.32) 38%, transparent 72%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(242, 196, 56, 0.28) 3.5%,
+      rgba(255, 255, 255, 0.72) 5%,
+      rgba(56, 189, 248, 0.38) 6.5%,
+      transparent 10%,
+      transparent 14%,
+      rgba(168, 85, 247, 0.26) 17%,
+      rgba(250, 204, 21, 0.55) 18.5%,
+      transparent 22%
+    );
+}
+
+.beam-scanline {
+  animation: beamScanlineSweep 0.65s ease-out 1 forwards;
+}
+
+/* =====================================================================
+   HERO UNROLL FROM RIGHT ENTRANCE ANIMATION
+   (Starts on the right, small & rolled up, then unrolls to full size)
+   ===================================================================== */
+@keyframes heroUnrollFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(92%) scaleX(0.08) scaleY(0.18) rotate(8deg);
+    clip-path: inset(35% 0% 35% 84% round 36px);
+    filter: brightness(1.45);
+  }
+  35% {
+    opacity: 0.95;
+    transform: translateX(18%) scaleX(0.32) scaleY(0.42) rotate(3deg);
+    clip-path: inset(18% 0% 18% 42% round 28px);
+  }
+  72% {
+    opacity: 1;
+    transform: translateX(-2%) scaleX(0.92) scaleY(0.95) rotate(-1deg);
+    clip-path: inset(2% 0% 2% 0% round 14px);
+  }
+  88% {
+    opacity: 1;
+    transform: translateX(0%) scaleX(1.03) scaleY(1.02) rotate(0deg);
+    clip-path: inset(0% 0% 0% 0% round 0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%) scaleX(1) scaleY(1) rotate(0deg);
+    clip-path: inset(0% 0% 0% 0% round 0px);
+    filter: brightness(1);
+  }
+}
+
+.animate-hero-unroll-right {
+  animation: heroUnrollFromRight 1.45s cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+  transform-origin: right center;
+}
+
+/* =====================================================================
+   3D DISCO-BALL MOSAIC BUTTONS (Matching the main logo's rainbow tile design)
+   ===================================================================== */
+.btn-disco-mosaic-3d {
+  position: relative;
+  color: #ffffff !important;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.98),
+    0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 2px rgba(0, 0, 0, 0.95);
+  border: 1.5px solid rgba(255, 245, 190, 0.92) !important;
+  background-image:
+    /* Top 3D curved mirror dome highlight */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.46) 0%,
+      rgba(255, 255, 255, 0.14) 44%,
+      rgba(0, 0, 0, 0.24) 54%,
+      rgba(0, 0, 0, 0.42) 100%
+    ),
+    /* Vertical disco mirror tile grid lines */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.26) 0px,
+      rgba(255, 255, 255, 0.26) 1px,
+      transparent 1px,
+      transparent 7px,
+      rgba(0, 0, 0, 0.42) 7px,
+      rgba(0, 0, 0, 0.42) 8px
+    ),
+    /* Horizontal disco mirror tile grid lines */
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.24) 0px,
+      rgba(255, 255, 255, 0.24) 1px,
+      transparent 1px,
+      transparent 7px,
+      rgba(0, 0, 0, 0.42) 7px,
+      rgba(0, 0, 0, 0.42) 8px
+    ),
+    /* Main Disco-Ball Logo concentric/diagonal rainbow spectrum */
+    linear-gradient(
+      115deg,
+      #e61919 0%,
+      #f37021 19%,
+      #facc15 38%,
+      #16a34a 58%,
+      #1d70db 79%,
+      #8b2cf5 100%
+    ) !important;
+  background-size: 100% 100%, 8px 8px, 8px 8px, 100% 100%;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -3px 4px rgba(0, 0, 0, 0.55),
+    0 4px 0 #3b0a45,
+    0 5px 0 #facc15,
+    0 9px 18px rgba(0, 0, 0, 0.45) !important;
+  transform: translateY(0px);
+  transition:
+    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.16s ease !important;
+}
+
+.btn-disco-mosaic-3d:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1) saturate(1.15);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 4px rgba(0, 0, 0, 0.5),
+    0 6px 0 #3b0a45,
+    0 7px 0 #facc15,
+    0 14px 24px rgba(0, 0, 0, 0.55) !important;
+}
+
+.btn-disco-mosaic-3d:active {
+  transform: translateY(3px);
+  filter: brightness(0.98);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.75),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.6),
+    0 1px 0 #3b0a45,
+    0 2px 0 #facc15,
+    0 4px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+.btn-disco-mosaic-3d svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+}
+
+.mosaic-strip {
+  height: 6px;
+  width: 100%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.25) 0px,
+      rgba(255, 255, 255, 0.25) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    linear-gradient(
+      90deg,
+      #e61919 0%,
+      #f37021 20%,
+      #facc15 40%,
+      #16a34a 60%,
+      #1d70db 80%,
+      #8b2cf5 100%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sparkle,
+  .animate-sparkle-delayed,
+  .animate-disco-ball,
+  .animate-disco-halo,
+  .animate-hero-unroll-right {
+    animation: none;
+  }
+}

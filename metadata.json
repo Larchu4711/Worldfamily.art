@@ -1,0 +1,8 @@
+{
+  "name": "Remix The World Family Bar — Finisterre",
+  "description": "Cultural hub, communal table, and living mosaic at the Atlantic end of the Camino de Santiago in Finisterre, Galicia — uniting World Family Bar, Street Food, Garden, and Applications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
